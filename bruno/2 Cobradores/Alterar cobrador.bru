@@ -1,0 +1,20 @@
+meta {
+  name: Alterar cobrador
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:3000/cobradores/1
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nome": "Zé Martelo",
+    "telefone": "53999990000",
+    "comissao": 15,
+    "ativo": true
+  }
+}

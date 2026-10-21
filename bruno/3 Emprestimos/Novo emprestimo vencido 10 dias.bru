@@ -1,0 +1,21 @@
+meta {
+  name: Novo emprestimo vencido 10 dias
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3000/emprestimos
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "clienteId": 1,
+    "cobradorId": 1,
+    "valor": 500,
+    "data": "2026-09-01",
+    "vencimento": "2026-10-11"
+  }
+}

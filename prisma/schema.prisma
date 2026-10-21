@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Cliente {
+  id           Int          @id @default(autoincrement())
+  nome         String       @db.VarChar(60)
+  apelido      String?      @db.VarChar(30)
+  telefone     String       @db.VarChar(20)
+  email        String       @unique @db.VarChar(100)
+  endereco     String?      @db.VarChar(120)
+  saldoDevedor Decimal      @default(0) @db.Decimal(10, 2)
+  emprestimos  Emprestimo[]
+
+  @@map("clientes")
+}
+
+model Cobrador {
+  id          Int          @id @default(autoincrement())
+  nome        String       @db.VarChar(60)
+  telefone    String       @db.VarChar(20)
+  comissao    Decimal      @db.Decimal(5, 2)
+  ativo       Boolean      @default(true)
+  emprestimos Emprestimo[]
+
+  @@map("cobradores")
+}
+
+model Emprestimo {
+  id          Int              @id @default(autoincrement())
+  cliente     Cliente          @relation(fields: [clienteId], references: [id])
+  clienteId   Int
+  cobrador    Cobrador         @relation(fields: [cobradorId], references: [id])
+  cobradorId  Int
+  valor       Decimal          @db.Decimal(10, 2)
+  juros       Decimal          @default(20) @db.Decimal(5, 2)
+  jurosAtraso Decimal          @default(0) @db.Decimal(10, 2)
+  valorTotal  Decimal          @db.Decimal(10, 2)
+  data        DateTime         @default(now())
+  vencimento  DateTime
+  status      StatusEmprestimo @default(ABERTO)
+  pagamentos  Pagamento[]
+
+  @@map("emprestimos")
+}
+
+model Pagamento {
+  id           Int            @id @default(autoincrement())
+  emprestimo   Emprestimo     @relation(fields: [emprestimoId], references: [id])
+  emprestimoId Int
+  valor        Decimal        @db.Decimal(10, 2)
+  forma        FormaPagamento
+  data         DateTime       @default(now())
+
+  @@map("pagamentos")
+}
+
+enum StatusEmprestimo {
+  ABERTO
+  ATRASADO
+  QUITADO
+}
+
+enum FormaPagamento {
+  PIX
+  DINHEIRO
+}

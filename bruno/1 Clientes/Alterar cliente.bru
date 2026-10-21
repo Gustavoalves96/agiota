@@ -1,0 +1,21 @@
+meta {
+  name: Alterar cliente
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:3000/clientes/1
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nome": "João da Silva",
+    "apelido": "Caloteiro",
+    "telefone": "53988887777",
+    "email": "joao@email.com",
+    "endereco": "Rua B, 200"
+  }
+}

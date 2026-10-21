@@ -1,0 +1,19 @@
+meta {
+  name: Pagamento parcial
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3000/pagamentos
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "emprestimoId": 1,
+    "valor": 300,
+    "forma": "PIX"
+  }
+}

@@ -1,0 +1,21 @@
+meta {
+  name: Cadastrar cliente
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3000/clientes
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nome": "João da Silva",
+    "apelido": "Joãozinho",
+    "telefone": "53988887777",
+    "email": "joao@email.com",
+    "endereco": "Rua A, 100"
+  }
+}

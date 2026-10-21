@@ -1,0 +1,19 @@
+meta {
+  name: Pagamento que quita
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3000/pagamentos
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "emprestimoId": 1,
+    "valor": 900,
+    "forma": "DINHEIRO"
+  }
+}

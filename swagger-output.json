@@ -1,0 +1,718 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API do Agiota",
+    "description": "Sistema de Controle de Empréstimos de um Agiota – juros de 20% + 1% ao dia após o vencimento",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/clientes/": {
+      "get": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Lista os clientes e seus saldos devedores",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Cadastra um cliente",
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Cliente"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clientes/{id}": {
+      "get": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Exibe um cliente com seus empréstimos e pagamentos",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Altera os dados de um cliente (o saldo devedor só muda pelas transações)",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Cliente"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Exclui um cliente (sem empréstimos vinculados)",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/clientes/{id}/extrato": {
+      "get": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Envia por e-mail o extrato do cliente",
+        "description": "Atualiza os juros de atraso e envia ao cliente a lista de empréstimos (débito) e pagamentos (crédito), com totais e o saldo devedor atual.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/cobradores/": {
+      "get": {
+        "tags": [
+          "Cobradores"
+        ],
+        "summary": "Lista os cobradores",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Cobradores"
+        ],
+        "summary": "Cadastra um cobrador",
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Cobrador"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cobradores/{id}": {
+      "get": {
+        "tags": [
+          "Cobradores"
+        ],
+        "summary": "Exibe um cobrador e os empréstimos sob sua responsabilidade",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Cobradores"
+        ],
+        "summary": "Altera os dados de um cobrador",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Cobrador"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Cobradores"
+        ],
+        "summary": "Exclui um cobrador (sem empréstimos vinculados)",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/emprestimos/": {
+      "get": {
+        "tags": [
+          "Empréstimos"
+        ],
+        "summary": "Lista os empréstimos com cliente e cobrador",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Empréstimos"
+        ],
+        "summary": "Registra um empréstimo (transação)",
+        "description": "Registra um novo empréstimo para o cliente, numa única transação:<br>  1. Cria o empréstimo calculando <b>valorTotal = valor × 1,20</b> (juros fixos de 20%).<br>  2. Soma o valorTotal ao <b>saldoDevedor</b> do cliente.<br><br>  Após o vencimento, cada dia sem quitar acrescenta <b>1% do valor emprestado</b> (juros simples),  cobrado no próximo pagamento ou extrato. Ex.: R$ 1.000 → R$ 1.200 no vencimento; com 10 dias de atraso, R$ 1.300.<br><br>  O cobrador precisa estar ativo e o vencimento deve ser posterior à data do empréstimo.  O campo <i>data</i> é opcional (padrão: data atual).",
+        "responses": {
+          "201": {
+            "description": "Empréstimo registrado e saldo devedor do cliente atualizado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "clienteId": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "cobradorId": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "valor": {
+                      "type": "string",
+                      "example": "1000"
+                    },
+                    "juros": {
+                      "type": "string",
+                      "example": "20"
+                    },
+                    "jurosAtraso": {
+                      "type": "string",
+                      "example": "0"
+                    },
+                    "valorTotal": {
+                      "type": "string",
+                      "example": "1200"
+                    },
+                    "data": {
+                      "type": "string",
+                      "example": "2026-10-21T00:00:00.000Z"
+                    },
+                    "vencimento": {
+                      "type": "string",
+                      "example": "2026-11-21T00:00:00.000Z"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "ABERTO"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "clienteId": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "cobradorId": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "valor": {
+                      "type": "string",
+                      "example": "1000"
+                    },
+                    "juros": {
+                      "type": "string",
+                      "example": "20"
+                    },
+                    "jurosAtraso": {
+                      "type": "string",
+                      "example": "0"
+                    },
+                    "valorTotal": {
+                      "type": "string",
+                      "example": "1200"
+                    },
+                    "data": {
+                      "type": "string",
+                      "example": "2026-10-21T00:00:00.000Z"
+                    },
+                    "vencimento": {
+                      "type": "string",
+                      "example": "2026-11-21T00:00:00.000Z"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "ABERTO"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos, cobrador inativo ou vencimento anterior à data."
+          },
+          "404": {
+            "description": "Cliente ou cobrador não encontrado."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "description": "Dados do empréstimo",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Emprestimo"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/emprestimos/{id}": {
+      "get": {
+        "tags": [
+          "Empréstimos"
+        ],
+        "summary": "Exibe um empréstimo com seus pagamentos",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Empréstimos"
+        ],
+        "summary": "Exclui um empréstimo sem pagamentos (transação: abate o valorTotal do saldo do cliente)",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/emprestimos/atualizar-atrasos": {
+      "post": {
+        "tags": [
+          "Empréstimos"
+        ],
+        "summary": "Recalcula os juros de atraso (1% ao dia) de todos os empréstimos não quitados",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/pagamentos/": {
+      "get": {
+        "tags": [
+          "Pagamentos"
+        ],
+        "summary": "Lista os pagamentos com empréstimo e cliente",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Pagamentos"
+        ],
+        "summary": "Registra um pagamento (transação)",
+        "description": "Atualiza os juros de atraso até a data do pagamento, cria o pagamento, abate o valor do saldo devedor do cliente e, se o total pago chegar ao valorTotal, muda o empréstimo para QUITADO.",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Pagamento"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pagamentos/{id}": {
+      "delete": {
+        "tags": [
+          "Pagamentos"
+        ],
+        "summary": "Exclui (estorna) um pagamento (transação)",
+        "description": "Exclui o pagamento, devolve o valor ao saldo devedor do cliente e reabre o empréstimo (ABERTO, ou ATRASADO se já venceu).",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Cliente": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "example": "João da Silva"
+          },
+          "apelido": {
+            "type": "string",
+            "example": "Joãozinho"
+          },
+          "telefone": {
+            "type": "string",
+            "example": "53988887777"
+          },
+          "email": {
+            "type": "string",
+            "example": "joao@email.com"
+          },
+          "endereco": {
+            "type": "string",
+            "example": "Rua A, 100"
+          }
+        },
+        "required": [
+          "nome",
+          "telefone",
+          "email"
+        ],
+        "xml": {
+          "name": "Cliente"
+        }
+      },
+      "Cobrador": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "example": "Zé Martelo"
+          },
+          "telefone": {
+            "type": "string",
+            "example": "53999990000"
+          },
+          "comissao": {
+            "type": "number",
+            "example": 10
+          },
+          "ativo": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "nome",
+          "telefone",
+          "comissao"
+        ],
+        "xml": {
+          "name": "Cobrador"
+        }
+      },
+      "Emprestimo": {
+        "type": "object",
+        "properties": {
+          "clienteId": {
+            "type": "number",
+            "example": 1
+          },
+          "cobradorId": {
+            "type": "number",
+            "example": 1
+          },
+          "valor": {
+            "type": "number",
+            "example": 1000
+          },
+          "vencimento": {
+            "type": "string",
+            "example": "2026-11-21"
+          },
+          "data": {
+            "type": "string",
+            "example": "2026-10-21"
+          }
+        },
+        "required": [
+          "clienteId",
+          "cobradorId",
+          "valor",
+          "vencimento"
+        ],
+        "xml": {
+          "name": "Emprestimo"
+        }
+      },
+      "Pagamento": {
+        "type": "object",
+        "properties": {
+          "emprestimoId": {
+            "type": "number",
+            "example": 1
+          },
+          "valor": {
+            "type": "number",
+            "example": 300
+          },
+          "forma": {
+            "type": "string",
+            "example": "PIX"
+          },
+          "data": {
+            "type": "string",
+            "example": "2026-10-25"
+          }
+        },
+        "required": [
+          "emprestimoId",
+          "valor",
+          "forma"
+        ],
+        "xml": {
+          "name": "Pagamento"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+meta {
+  name: Cadastrar cobrador
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3000/cobradores
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nome": "Zé Martelo",
+    "telefone": "53999990000",
+    "comissao": 10,
+    "ativo": true
+  }
+}
