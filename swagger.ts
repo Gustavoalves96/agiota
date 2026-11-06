@@ -12,7 +12,11 @@ const doc = {
       Cliente: { $nome: "João da Silva", apelido: "Joãozinho", $telefone: "53988887777", $email: "joao@email.com", endereco: "Rua A, 100" },
       Cobrador: { $nome: "Zé Martelo", $telefone: "53999990000", $comissao: 10, ativo: true },
       Emprestimo: { $clienteId: 1, $cobradorId: 1, $valor: 1000, $vencimento: "2026-11-21", data: "2026-10-21" },
-      Pagamento: { $emprestimoId: 1, $valor: 300, $forma: "PIX", data: "2026-10-25" }
+      Pagamento: { $emprestimoId: 1, $valor: 300, $forma: "PIX", data: "2026-10-25" },
+      Usuario: { $nome: "Agiota Chefe", $email: "chefe@email.com", $senha: "Senha@123" },
+      Login: { $email: "chefe@email.com", $senha: "Senha@123" },
+      EsqueciSenha: { $email: "chefe@email.com" },
+      RedefinirSenha: { $email: "chefe@email.com", $codigo: "A2B3", $novaSenha: "NovaSenha@456" }
     }
   }
 }

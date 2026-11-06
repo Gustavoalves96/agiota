@@ -60,6 +60,18 @@ model Pagamento {
   @@map("pagamentos")
 }
 
+model Usuario {
+  id                Int      @id @default(autoincrement())
+  nome              String   @db.VarChar(30)
+  email             String   @unique @db.VarChar(100)
+  senha             String   @db.VarChar(60) // 60 é o tamanho do hash gerado pelo bcrypt
+  codigoRecuperacao String?  @db.VarChar(4) // código enviado por e-mail para recuperar a senha
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("usuarios")
+}
+
 enum StatusEmprestimo {
   ABERTO
   ATRASADO

@@ -1,0 +1,19 @@
+meta {
+  name: Redefinir senha
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3000/login/redefinir-senha
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "chefe@email.com",
+    "codigo": "A2B3",
+    "novaSenha": "NovaSenha@456"
+  }
+}

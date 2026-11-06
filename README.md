@@ -6,13 +6,13 @@ API (fictícia, para fins didáticos) para um agiota controlar clientes, cobrado
 
 ## Tecnologias
 
-Express, TypeScript, Prisma (MySQL), Zod, Nodemailer (Mailtrap), swagger-autogen e swagger-ui-express.
+Express, TypeScript, Prisma (MySQL), Zod, bcrypt, jsonwebtoken, Nodemailer (Mailtrap), swagger-autogen e swagger-ui-express.
 
 ## Como rodar
 
 ```
 npm install
-cp .env.example .env        # preencha a senha do MySQL e as credenciais do Mailtrap
+cp .env.example .env        # preencha a senha do MySQL, as credenciais do Mailtrap e o JWT_SECRET
 npx prisma migrate dev
 npm run dev
 ```
@@ -33,3 +33,17 @@ Coleção de testes do Bruno: pasta `bruno/` (Open Collection).
 ## E-mail
 
 `GET /clientes/:id/extrato` envia ao cliente a lista de empréstimos (débito) e pagamentos (crédito), com totais e saldo devedor atual.
+
+## Usuários e recuperação de senha
+
+As senhas são salvas com hash bcrypt, e o login devolve um token JWT válido por 15 minutos.
+
+| Rota | Corpo | O que faz |
+|---|---|---|
+| `POST /usuarios` | `{ nome, email, senha }` | Cadastra o usuário, validando as regras de composição da senha |
+| `GET /usuarios` | | Lista os usuários, sem `senha` e sem `codigoRecuperacao` |
+| `POST /login` | `{ email, senha }` | Devolve os dados do usuário e o token |
+| `POST /login/esqueci-senha` | `{ email }` | Gera um código de 4 caracteres, salva em `codigoRecuperacao` e envia ao e-mail do usuário |
+| `POST /login/redefinir-senha` | `{ email, codigo, novaSenha }` | Valida os dados e as regras da senha, altera a senha e apaga o código |
+
+`POST /login/esqueci-senha` responde com a mesma mensagem exista ou não o e-mail, para não revelar quem é cadastrado.

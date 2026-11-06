@@ -584,6 +584,138 @@
           }
         }
       }
+    },
+    "/usuarios/": {
+      "get": {
+        "tags": [
+          "Usuários"
+        ],
+        "summary": "Lista os usuários (sem a senha e o código de recuperação)",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Usuários"
+        ],
+        "summary": "Cadastra um usuário",
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Usuario"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login/": {
+      "post": {
+        "tags": [
+          "Login"
+        ],
+        "summary": "Faz o login e devolve o token JWT",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login/esqueci-senha": {
+      "post": {
+        "tags": [
+          "Login"
+        ],
+        "summary": "Gera um código de recuperação e envia ao e-mail do usuário",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EsqueciSenha"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login/redefinir-senha": {
+      "post": {
+        "tags": [
+          "Login"
+        ],
+        "summary": "Altera a senha a partir do código recebido por e-mail",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RedefinirSenha"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -711,6 +843,91 @@
         ],
         "xml": {
           "name": "Pagamento"
+        }
+      },
+      "Usuario": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "example": "Agiota Chefe"
+          },
+          "email": {
+            "type": "string",
+            "example": "chefe@email.com"
+          },
+          "senha": {
+            "type": "string",
+            "example": "Senha@123"
+          }
+        },
+        "required": [
+          "nome",
+          "email",
+          "senha"
+        ],
+        "xml": {
+          "name": "Usuario"
+        }
+      },
+      "Login": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "chefe@email.com"
+          },
+          "senha": {
+            "type": "string",
+            "example": "Senha@123"
+          }
+        },
+        "required": [
+          "email",
+          "senha"
+        ],
+        "xml": {
+          "name": "Login"
+        }
+      },
+      "EsqueciSenha": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "chefe@email.com"
+          }
+        },
+        "required": [
+          "email"
+        ],
+        "xml": {
+          "name": "EsqueciSenha"
+        }
+      },
+      "RedefinirSenha": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "chefe@email.com"
+          },
+          "codigo": {
+            "type": "string",
+            "example": "A2B3"
+          },
+          "novaSenha": {
+            "type": "string",
+            "example": "NovaSenha@456"
+          }
+        },
+        "required": [
+          "email",
+          "codigo",
+          "novaSenha"
+        ],
+        "xml": {
+          "name": "RedefinirSenha"
         }
       }
     }

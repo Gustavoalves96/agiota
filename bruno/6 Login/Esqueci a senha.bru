@@ -1,0 +1,17 @@
+meta {
+  name: Esqueci a senha
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3000/login/esqueci-senha
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "chefe@email.com"
+  }
+}
